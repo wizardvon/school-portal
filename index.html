@@ -47,9 +47,9 @@
   </div>
 
   <div class="promo-controls">
-    <button class="btn ghost" id="pauseBtn">Pause</button>
-    <button class="btn ghost" id="fasterBtn">Faster</button>
-    <button class="btn ghost" id="slowerBtn">Slower</button>
+    <button class="btn ghost" id="pauseBtn">⏸</button>
+    <button class="btn ghost" id="fasterBtn">➕</button>
+    <button class="btn ghost" id="slowerBtn">➖</button>
   </div>
 </section>
 <script>
@@ -63,7 +63,7 @@
   pauseBtn.addEventListener('click', () => {
     paused = !paused;
     rail.classList.toggle('paused', paused);
-    pauseBtn.textContent = paused ? 'Resume' : 'Pause';
+    pauseBtn.textContent = paused ? '▶' : '⏸';
   });
   function setSpeed(mult) {
     // read current speed (e.g., "40s") and adjust
