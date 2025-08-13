@@ -5,17 +5,30 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Welcome!</title>
+  <link rel="stylesheet" href="styles.css" />
   <style>
-    html, body { height: 100%; margin: 0; font-family: system-ui, Arial, sans-serif; }
-    .wrap { min-height: 100%; display: grid; place-items: center; text-align: center; padding: 2rem; }
+    .wrap { min-height: 100vh; display: grid; place-items: center; text-align: center; padding: 2rem; }
     h1 { font-size: clamp(2.5rem, 6vw, 4rem); margin: 0.5rem 0; }
     p { margin: 0.25rem 0; }
     .links { margin-top: 1rem; display: inline-flex; gap: .75rem; }
-    a { padding: .6rem 1rem; border: 1px solid #ccc; border-radius: 999px; text-decoration: none; }
-    a:hover { border-color: #888; }
+    .links a { padding: .6rem 1rem; border: 1px solid var(--border); border-radius: 999px; text-decoration: none; }
+    .links a:hover { border-color: var(--accent); }
   </style>
 </head>
 <body>
+  <header class="topbar">
+    <nav class="center-nav">
+      <a href="./index.html" aria-current="page">Home</a>
+      <a href="./teacher-dashboard.html">Dashboard</a>
+      <a href="./teacher-gradinghub.html">Gradinghub</a>
+      <a href="./teacher-schedule.html">Schedule</a>
+      <a href="./teacher-calendar.html">Calendar</a>
+      <a href="./teacher-announcements.html">Announcements</a>
+      <a href="./teacher-settings.html">Settings</a>
+      <a href="./teacher-help.html">Help</a>
+      <a href="./teacher-files.html">Upload/Download</a>
+    </nav>
+  </header>
   <main class="wrap">
     <div>
       <h1>Welcome!</h1>
@@ -23,6 +36,7 @@
       <div class="links">
         <a href="student.html" title="Student portal (coming soon)">Student</a>
         <a href="teacher.html" title="Teacher portal login">Teacher Login</a>
+        <a href="teacher-dashboard.html" title="Teacher dashboard">Teacher Dashboard</a>
       </div>
     </div>
   </main>
