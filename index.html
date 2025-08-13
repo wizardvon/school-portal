@@ -18,6 +18,100 @@
 <body>
   <main class="wrap">
     <div>
+
+
+<section class="promo" aria-labelledby="eventsTitle">
+  <h2 id="eventsTitle">School Events</h2>
+
+  <div class="promo-rail" id="promoRail" role="region" aria-label="School events carousel">
+    <div class="promo-track" id="promoTrack">
+      <!-- === SLIDES (set 1) === -->
+      <article class="promo-card">
+        <figure>
+          <img src="./assets/events/event1.jpg" alt="Brigada Eskwela volunteers cleaning classrooms" loading="lazy" decoding="async">
+          <figcaption>Brigada Eskwela — August 2025</figcaption>
+        </figure>
+      </article>
+
+      <article class="promo-card">
+        <figure>
+          <img src="./assets/events/event2.jpg" alt="Math & Science Week Quiz Bee finalists on stage" loading="lazy" decoding="async">
+          <figcaption>Math & Science Week — Quiz Bee Finals</figcaption>
+        </figure>
+      </article>
+
+      <article class="promo-card">
+        <figure>
+          <img src="./assets/events/event3.jpg" alt="Teachers’ training on ICT tools in the lab" loading="lazy" decoding="async">
+          <figcaption>ICT In-Service Training — Faculty Dev</figcaption>
+        </figure>
+      </article>
+
+      <!-- === SLIDES (set 2 duplicate for seamless loop) === -->
+      <article class="promo-card">
+        <figure>
+          <img src="./assets/events/event1.jpg" alt="" aria-hidden="true" loading="lazy">
+          <figcaption aria-hidden="true">Brigada Eskwela — August 2025</figcaption>
+        </figure>
+      </article>
+
+      <article class="promo-card">
+        <figure>
+          <img src="./assets/events/event2.jpg" alt="" aria-hidden="true" loading="lazy">
+          <figcaption aria-hidden="true">Math & Science Week — Quiz Bee Finals</figcaption>
+        </figure>
+      </article>
+
+      <article class="promo-card">
+        <figure>
+          <img src="./assets/events/event3.jpg" alt="" aria-hidden="true" loading="lazy">
+          <figcaption aria-hidden="true">ICT In-Service Training — Faculty Dev</figcaption>
+        </figure>
+      </article>
+    </div>
+  </div>
+
+  <div class="promo-controls">
+    <button class="btn ghost" id="pauseBtn">Pause</button>
+    <button class="btn ghost" id="fasterBtn">Faster</button>
+    <button class="btn ghost" id="slowerBtn">Slower</button>
+  </div>
+</section>
+
+<script>
+  // Small helpers: pause/resume + speed adjust
+  const rail = document.getElementById('promoRail');
+  const track = document.getElementById('promoTrack');
+  const pauseBtn = document.getElementById('pauseBtn');
+  const fasterBtn = document.getElementById('fasterBtn');
+  const slowerBtn = document.getElementById('slowerBtn');
+
+  let paused = false;
+  pauseBtn.addEventListener('click', () => {
+    paused = !paused;
+    rail.classList.toggle('paused', paused);
+    pauseBtn.textContent = paused ? 'Resume' : 'Pause';
+  });
+
+  function setSpeed(mult) {
+    // read current speed (e.g., "40s") and adjust
+    const current = getComputedStyle(track).getPropertyValue('--speed').trim() || '40s';
+    const n = parseFloat(current);
+    const unit = current.endsWith('ms') ? 'ms' : 's';
+    const newVal = Math.max(5, Math.min(120, n * mult)); // clamp between 5s and 120s
+    track.style.setProperty('--speed', newVal + unit);
+  }
+  fasterBtn.addEventListener('click', () => setSpeed(0.8));
+  slowerBtn.addEventListener('click', () => setSpeed(1.25));
+
+  // Keyboard: space to pause/resume
+  document.addEventListener('keydown', (e) => {
+    if (e.code === 'Space') { e.preventDefault(); pauseBtn.click(); }
+  });
+</script>
+
+
+      
       <h1>Welcome!</h1>
       <p>This is the starting point for our Student & Teacher portal.</p>
       <div class="links">
