@@ -91,3 +91,71 @@ input:focus, select:focus, textarea:focus, .btn:focus, a:focus {
 
 /* Footer */
 .footer { margin: 40px 0 24px; color: var(--muted); text-align: center; font-size: .9rem; }
+
+
+
+
+
+/* --- Promo carousel (continuous horizontal scroll) --- */
+.promo { margin-top: 8px; }
+.promo h2 { margin: 0 0 12px; font-size: 1.25rem; color: var(--text); }
+
+.promo-rail {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  box-shadow: var(--shadow);
+}
+
+/* fade edges for a pro look */
+.promo-rail::before,
+.promo-rail::after {
+  content: "";
+  position: absolute; top: 0; bottom: 0; width: 48px; z-index: 2;
+  pointer-events: none;
+  background: linear-gradient(to right, var(--surface), transparent);
+}
+.promo-rail::after {
+  right: 0; left: auto;
+  transform: scaleX(-1);
+}
+
+.promo-track {
+  --speed: 40s;               /* adjust speed: lower = faster */
+  display: flex; gap: 16px;
+  padding: 12px;
+  will-change: transform;
+  animation: promo-scroll var(--speed) linear infinite;
+}
+.promo-rail:hover .promo-track,
+.promo-rail.paused .promo-track { animation-play-state: paused; }
+
+@keyframes promo-scroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); } /* because we duplicate items */
+}
+
+.promo-card {
+  min-width: clamp(240px, 28vw, 360px);
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+.promo-card figure { margin: 0; }
+.promo-card img {
+  display: block; width: 100%;
+  aspect-ratio: 16/9; object-fit: cover;
+}
+.promo-card figcaption {
+  padding: 10px 12px;
+  font-size: .95rem; color: var(--muted);
+}
+
+/* tiny control bar */
+.promo-controls {
+  display: flex; justify-content: center; gap: 8px; margin-top: 10px;
+}
+.promo-controls .btn { padding: .45rem .75rem; font-weight: 600; }
