@@ -3,13 +3,21 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Teacher Files</title>
-  <link rel="stylesheet" href="styles.css" />
+  <title>Teacher — Upload/Download</title>
+  <link rel="stylesheet" href="./styles.css" />
+  <!-- Google scripts -->
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+  <script src="https://apis.google.com/js/api.js"></script>
+  <style>
+    .row { display:flex; gap:12px; flex-wrap:wrap; align-items:center; margin:12px 0; }
+    .muted { color: var(--muted); font-size:.9rem; }
+    .table-wrap { overflow:auto; }
+  </style>
 </head>
 <body>
+  <!-- Centered dark nav -->
   <header class="topbar">
-    <nav class="center-nav">
-      <a href="./index.html">Home</a>
+    <nav class="center-nav" aria-label="Main">
       <a href="./teacher-dashboard.html">Dashboard</a>
       <a href="./teacher-gradinghub.html">Gradinghub</a>
       <a href="./teacher-schedule.html">Schedule</a>
@@ -20,11 +28,191 @@
       <a href="./teacher-files.html" aria-current="page">Upload/Download</a>
     </nav>
   </header>
-  <main>
-    <h1>Upload/Download</h1>
-    <section>
-      <p>File upload and download functionality coming soon.</p>
-    </section>
+
+  <main class="container">
+    <h1>Upload / Download</h1>
+
+    <div class="card">
+      <div class="row">
+        <button class="btn" id="signin">Sign in with Google</button>
+        <button class="btn ghost" id="openPicker" disabled>Open Drive Picker</button>
+        <input type="text" id="newFolderName" placeholder="New folder name" style="max-width:260px">
+        <button class="btn ghost" id="createFolder" disabled>Create folder</button>
+        <label class="btn ghost" style="cursor:pointer">
+          <input type="file" id="fileInput" multiple hidden>
+          Upload file(s)
+        </label>
+        <button class="btn ghost" id="refresh" disabled>Refresh list</button>
+      </div>
+      <p class="muted">Files are stored in your Shared Drive folder. Only signed-in teachers can view or upload.</p>
+    </div>
+
+    <div class="card table-wrap">
+      <table class="table" id="fileTable">
+        <thead><tr><th>Name</th><th>Type</th><th>Updated</th><th>Size</th><th>Actions</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
   </main>
+
+  <footer class="footer">© 2025 Makeans Senior High School</footer>
+
+  <script>
+  // ======= CONFIG: fill these =======
+  const CLIENT_ID = "YOUR_OAUTH_CLIENT_ID.apps.googleusercontent.com";
+  const API_KEY   = "YOUR_API_KEY";
+  const DRIVE_ID  = "YOUR_SHARED_DRIVE_ID";     // e.g. from /drives/<id>
+  const PARENT_FOLDER_ID = "YOUR_FOLDER_ID";    // the folder inside the Shared Drive to use
+  // ======= end config =======
+
+  let oauthToken = null;
+
+  // 1) Load Picker API, enable buttons after sign-in
+  function loadPicker() { gapi.load('picker', () => {}); }
+
+  // 2) Sign in (GIS) to get an access token for Drive API + Picker
+  function initAuth() {
+    const tokenClient = google.accounts.oauth2.initTokenClient({
+      client_id: CLIENT_ID,
+      scope: [
+        "https://www.googleapis.com/auth/drive",           // full drive (simplest to start)
+        "https://www.googleapis.com/auth/drive.metadata"   // list metadata
+      ].join(" "),
+      callback: (resp) => {
+        oauthToken = resp.access_token;
+        document.querySelectorAll('#openPicker,#createFolder,#refresh').forEach(b=>b.disabled=false);
+        listFiles();
+      }
+    });
+    document.getElementById('signin').addEventListener('click', () => tokenClient.requestAccessToken());
+  }
+
+  // 3) Google Picker: choose/upload files into our folder
+  function openPicker() {
+    if (!oauthToken) return;
+    const view = new google.picker.DocsView(google.picker.ViewId.DOCS)
+      .setSelectFolderEnabled(true).setIncludeFolders(true)
+      .setOwnedByMe(false);
+
+    const uploadView = new google.picker.DocsUploadView()
+      .setParent(PARENT_FOLDER_ID); // uploads go into our folder
+
+    const picker = new google.picker.PickerBuilder()
+      .setOAuthToken(oauthToken)
+      .setDeveloperKey(API_KEY)
+      .addView(view)
+      .addView(uploadView)
+      .setCallback(pickerCallback)
+      .enableFeature(google.picker.Feature.NAV_HIDDEN)
+      .build();
+
+    picker.setVisible(true);
+  }
+
+  function pickerCallback(data) {
+    if (data.action === google.picker.Action.PICKED || data.action === google.picker.Action.UPLOADED) {
+      listFiles();
+    }
+  }
+
+  // 4) Create a subfolder under PARENT_FOLDER_ID
+  async function createFolder() {
+    const name = document.getElementById('newFolderName').value.trim();
+    if (!name) return;
+    const meta = {
+      name, mimeType: "application/vnd.google-apps.folder",
+      parents: [PARENT_FOLDER_ID]
+    };
+    const res = await fetch("https://www.googleapis.com/drive/v3/files?supportsAllDrives=true", {
+      method: "POST",
+      headers: { "Authorization": "Bearer " + oauthToken, "Content-Type": "application/json" },
+      body: JSON.stringify(meta)
+    });
+    if (res.ok) { document.getElementById('newFolderName').value=""; listFiles(); }
+  }
+
+  // 5) List files in the folder (Shared Drive aware)
+  async function listFiles() {
+    const q = `'${PARENT_FOLDER_ID}' in parents and trashed=false`;
+    const url = new URL("https://www.googleapis.com/drive/v3/files");
+    url.searchParams.set("q", q);
+    url.searchParams.set("fields", "files(id,name,mimeType,modifiedTime,size,webViewLink,webContentLink,iconLink)");
+    url.searchParams.set("corpora", "drive");
+    url.searchParams.set("driveId", DRIVE_ID);
+    url.searchParams.set("includeItemsFromAllDrives", "true");
+    url.searchParams.set("supportsAllDrives", "true");
+
+    const res = await fetch(url, { headers: { "Authorization": "Bearer " + oauthToken }});
+    const data = await res.json();
+    const tbody = document.querySelector("#fileTable tbody");
+    tbody.innerHTML = "";
+
+    (data.files||[]).forEach(f => {
+      const tr = document.createElement("tr");
+      const size = f.size ? (Math.round(f.size/1024)+" KB") : "-";
+      const date = f.modifiedTime ? new Date(f.modifiedTime).toLocaleString() : "-";
+      const dl   = `https://www.googleapis.com/drive/v3/files/${f.id}?alt=media`; // needs auth
+      tr.innerHTML = `
+        <td>${f.name}</td>
+        <td>${f.mimeType}</td>
+        <td>${date}</td>
+        <td>${size}</td>
+        <td>
+          <a class="btn ghost" href="${f.webViewLink||'#'}" target="_blank" rel="noopener">Open</a>
+          <button class="btn ghost" data-id="${f.id}">Download</button>
+        </td>`;
+      tbody.appendChild(tr);
+    });
+
+    // attach download handlers (authorized fetch)
+    tbody.querySelectorAll("button[data-id]").forEach(btn=>{
+      btn.addEventListener('click', async () => {
+        const id = btn.getAttribute('data-id');
+        const res = await fetch(`https://www.googleapis.com/drive/v3/files/${id}?alt=media`, {
+          headers: { "Authorization": "Bearer " + oauthToken }
+        });
+        const blob = await res.blob();
+        const a = document.createElement("a");
+        a.href = URL.createObjectURL(blob);
+        a.download = "download"; a.click();
+        URL.revokeObjectURL(a.href);
+      });
+    });
+  }
+
+  // 6) Upload via <input type="file">
+  async function uploadFiles(files) {
+    for (const file of files) {
+      const meta = {
+        name: file.name,
+        parents: [PARENT_FOLDER_ID]
+      };
+      const boundary = "-------portalboundary" + Math.random().toString(16).slice(2);
+      const body =
+        `--${boundary}\r\nContent-Type: application/json; charset=UTF-8\r\n\r\n` +
+        JSON.stringify(meta) + `\r\n` +
+        `--${boundary}\r\nContent-Type: ${file.type||"application/octet-stream"}\r\n\r\n`;
+
+      const tail = `\r\n--${boundary}--`;
+      const blobBody = new Blob([body, file, tail], { type: "multipart/related; boundary=" + boundary });
+
+      await fetch("https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&supportsAllDrives=true", {
+        method: "POST",
+        headers: { "Authorization": "Bearer " + oauthToken },
+        body: blobBody
+      });
+    }
+    listFiles();
+  }
+
+  // wire UI
+  window.addEventListener('DOMContentLoaded', () => {
+    loadPicker(); initAuth();
+    document.getElementById('openPicker').addEventListener('click', openPicker);
+    document.getElementById('createFolder').addEventListener('click', createFolder);
+    document.getElementById('refresh').addEventListener('click', listFiles);
+    document.getElementById('fileInput').addEventListener('change', (e)=> uploadFiles(e.target.files));
+  });
+  </script>
 </body>
 </html>
