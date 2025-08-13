@@ -1,19 +1,93 @@
+/* Global — professional dark theme */
+:root {
+  color-scheme: dark;
+  --bg: #0b1220;           /* page background (charcoal / navy) */
+  --surface: #101826;      /* cards / header */
+  --surface-2: #0d1626;    /* subtle alt surface */
+  --text: #e6eaf2;         /* primary text */
+  --muted: #a3acc2;        /* secondary text */
+  --border: #1f2a3a;       /* hairline borders */
+  --accent: #6366f1;       /* indigo */
+  --accent-hover: #818cf8; /* lighter indigo */
+  --danger: #ef4444;
+  --success: #22c55e;
+  --radius: 14px;
+  --shadow: 0 8px 30px rgba(0,0,0,.25);
+  --trans: 160ms ease;
+  --container: 1080px;
+  --pad: 16px;
+  --gap: 16px;
+  --font: system-ui, "Segoe UI", Roboto, Arial, "Apple Color Emoji",
+           "Segoe UI Emoji", "Segoe UI Symbol";
+}
+
+* { box-sizing: border-box; }
+html, body { height: 100%; }
 body {
-  margin: 0;
-  font-family: system-ui, Arial, sans-serif;
+  margin: 0; background: var(--bg); color: var(--text); font-family: var(--font);
+  -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility;
 }
 
-header {
-  padding: 12px;
-  border-bottom: 1px solid #ddd;
+/* Centered top nav (sticky) */
+.topbar {
+  position: sticky; top: 0; z-index: 10;
+  backdrop-filter: blur(8px);
+  background: color-mix(in oklab, var(--bg), white 3%);
+  border-bottom: 1px solid var(--border);
+}
+.center-nav {
+  display: flex; justify-content: center; gap: 10px; flex-wrap: wrap;
+  padding: 10px 12px;
+}
+.center-nav a {
+  color: var(--text); text-decoration: none; opacity: .9;
+  padding: .55rem .9rem; border-radius: 999px;
+  border: 1px solid transparent; transition: background var(--trans), border var(--trans), opacity var(--trans);
+}
+.center-nav a:hover, .center-nav a[aria-current="page"] {
+  background: var(--surface); border-color: var(--border); opacity: 1;
+  box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--border), white 10%);
 }
 
-nav {
-  display: flex;
-  gap: 12px;
-  flex-wrap: wrap;
+/* Layout helpers */
+.container { max-width: var(--container); margin: 28px auto; padding: 0 var(--pad); }
+.grid { display: grid; gap: var(--gap); grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+
+/* Cards */
+.card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 16px; box-shadow: var(--shadow);
+}
+.card h2 { margin: 0 0 8px; font-size: 1.1rem; }
+.card p { margin: 6px 0 0; color: var(--muted); }
+
+/* Tables */
+.table { width: 100%; border-collapse: collapse; background: var(--surface); border-radius: var(--radius); overflow: hidden; }
+.table th, .table td { padding: 12px 14px; border-bottom: 1px solid var(--border); text-align: left; }
+.table th { color: var(--muted); font-weight: 600; background: var(--surface-2); }
+.table tr:hover td { background: color-mix(in oklab, var(--surface), white 2%); }
+
+/* Buttons */
+.btn {
+  appearance: none; border: 1px solid transparent; cursor: pointer;
+  padding: .55rem .9rem; border-radius: 10px; font-weight: 600;
+  background: var(--accent); color: white; transition: transform var(--trans), background var(--trans);
+}
+.btn:hover { background: var(--accent-hover); transform: translateY(-1px); }
+.btn.ghost { background: transparent; color: var(--text); border-color: var(--border); }
+.btn.ghost:hover { background: var(--surface); }
+
+/* Forms */
+input, select, textarea {
+  width: 100%; background: var(--surface); color: var(--text);
+  border: 1px solid var(--border); border-radius: 10px; padding: .6rem .7rem;
+}
+input:focus, select:focus, textarea:focus, .btn:focus, a:focus {
+  outline: 2px solid var(--accent); outline-offset: 2px;
 }
 
-main {
-  padding: 1rem;
-}
+/* Badges / chips */
+.badge { display: inline-flex; align-items: center; gap: 6px; font-size: .85rem; padding: .25rem .5rem; border-radius: 999px; border: 1px solid var(--border); background: var(--surface-2); color: var(--muted); }
+
+/* Footer */
+.footer { margin: 40px 0 24px; color: var(--muted); text-align: center; font-size: .9rem; }
