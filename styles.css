@@ -51,7 +51,11 @@ body {
 
 /* Layout helpers */
 .container { max-width: var(--container); margin: 28px auto; padding: 0 var(--pad); }
-.grid { display: grid; gap: var(--gap); grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+.grid { display: grid; gap: var(--gap); grid-template-columns: repeat(2, 1fr); }
+.row { display:flex; gap:12px; flex-wrap:wrap; align-items:center; margin:12px 0; }
+@media (max-width: 640px) {
+  .grid { grid-template-columns: 1fr; }
+}
 
 /* Cards */
 .card {
