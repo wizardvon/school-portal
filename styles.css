@@ -64,6 +64,7 @@ body {
 }
 .card h2 { margin: 0 0 8px; font-size: 1.1rem; }
 .card p { margin: 6px 0 0; color: var(--muted); }
+.card ul { margin: 0 0 8px 1.25rem; }
 
 /* Tables */
 .table { width: 100%; border-collapse: collapse; background: var(--surface); border-radius: var(--radius); overflow: hidden; }
