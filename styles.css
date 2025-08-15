@@ -77,6 +77,7 @@ body {
   appearance: none; border: 1px solid transparent; cursor: pointer;
   padding: .55rem .9rem; border-radius: 10px; font-weight: 600;
   background: var(--accent); color: white; transition: transform var(--trans), background var(--trans);
+  display: inline-block; position: relative;
 }
 .btn:hover { background: var(--accent-hover); transform: translateY(-1px); }
 .btn.ghost { background: transparent; color: var(--text); border-color: var(--border); }
