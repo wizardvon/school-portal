@@ -3,13 +3,16 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Teacher Grading Hub</title>
-  <link rel="stylesheet" href="styles.css" />
+  <title>Teacher — Grading Hub</title>
+  <link rel="stylesheet" href="./styles.css" />
+  <style>
+    .link-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+  </style>
 </head>
 <body>
+  <!-- Centered dark nav -->
   <header class="topbar">
-    <nav class="center-nav">
-      <a href="./index.html">Home</a>
+    <nav class="center-nav" aria-label="Main">
       <a href="./teacher-dashboard.html">Dashboard</a>
       <a href="./teacher-gradinghub.html" aria-current="page">Gradinghub</a>
       <a href="./teacher-schedule.html">Schedule</a>
@@ -20,11 +23,13 @@
       <a href="./teacher-files.html">Upload/Download</a>
     </nav>
   </header>
-<main class="wrap">
-    <div class="grades">
-      <section class="grade" id="grade11">
+
+  <main class="container">
+    <h1>Grading Hub</h1>
+    <div class="grid">
+      <div class="card">
         <h2>Grade 11</h2>
-        <ul>
+        <ul class="link-list">
           <li><a href="https://r4adeped3-my.sharepoint.com/:x:/g/personal/michaelbon_jaime_r4a-3_deped_gov_ph/EZwu3QTQGz9FgG3M7vkogeoB_c-Osw35fgv6TMCNPdAy5Q?e=H6pIne">ABM 11 - Aboitiz</a></li>
           <li><a href="https://r4adeped3-my.sharepoint.com/:x:/g/personal/michaelbon_jaime_r4a-3_deped_gov_ph/EZ5UeOjTF9ZJo1dlNPj9eJ4BX3v5eMRqlX-qLL2behqSzg?e=zEncxb">HUMSS 11 - Aristotle</a></li>
           <li><a href="https://r4adeped3-my.sharepoint.com/:x:/g/personal/michaelbon_jaime_r4a-3_deped_gov_ph/EXbTzATP3fVNkgGFlGvc05MBI8XqL6mgemFn8mjg7UDzxw?e=KZTjcb">HUMSS 11 - Confucius</a></li>
@@ -35,10 +40,11 @@
           <li><a href="https://r4adeped3-my.sharepoint.com/:x:/g/personal/michaelbon_jaime_r4a-3_deped_gov_ph/EZgcgdtqSaJMs7s868cnvaUBgjwxMpWJMLiB-UFhnpsw6Q?e=HPIyEA">TVL HE 11 - Stewart</a></li>
           <li><a href="https://r4adeped3-my.sharepoint.com/:x:/g/personal/michaelbon_jaime_r4a-3_deped_gov_ph/EZLoOFFJfolFiwmx8pd7RT8B4canwV48dpWqwub3Ix_Yug?e=KG33Q4">TVLE ICT 11 - Bill Gates</a></li>
         </ul>
-      </section>
-      <section class="grade" id="grade12">
+      </div>
+
+      <div class="card">
         <h2>Grade 12</h2>
-        <ul>
+        <ul class="link-list">
           <li><a href="https://example.com">ABM 12 - Gokongwei</a></li>
           <li><a href="https://example.com">HUMSS 12 - Aquinas</a></li>
           <li><a href="https://example.com">HUMSS 12 - Archimedes</a></li>
@@ -49,8 +55,11 @@
           <li><a href="https://example.com">TVL HE 12 - Hilton</a></li>
           <li><a href="https://example.com">TVLE ICT 12 - Lovelace</a></li>
         </ul>
-      </section>
+      </div>
     </div>
   </main>
+
+  <footer class="footer">© 2025 Makeans Senior High School</footer>
 </body>
 </html>
+
