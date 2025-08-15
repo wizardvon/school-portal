@@ -20,11 +20,90 @@
       <a href="./teacher-files.html">Upload/Download</a>
     </nav>
   </header>
-  <main>
+  <main class="container">
     <h1>Teacher Dashboard</h1>
-    <section>
-      <p>Dashboard content coming soon.</p>
-    </section>
+    <div class="grid">
+      <div class="card">
+        <h2>Today's Schedule</h2>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Time</th>
+              <th>Subject</th>
+              <th>Section</th>
+              <th>Room</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>8:00 AM</td>
+              <td>Math</td>
+              <td>ABM 11</td>
+              <td>101</td>
+              <td><a class="btn" href="./teacher-attendance.html">Attendance</a></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="card">
+        <h2>Grading Queue</h2>
+        <div class="row">
+          <span class="badge">Pending: 3</span>
+          <a class="btn" href="./teacher-gradinghub.html">Open Gradinghub</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Latest Announcements</h2>
+        <ul class="muted">
+          <li>Staff meeting at 3 PM</li>
+          <li>Grade submissions due Friday</li>
+          <li>Field trip schedule available</li>
+        </ul>
+        <a class="btn" href="./teacher-announcements.html">View all</a>
+      </div>
+
+      <div class="card">
+        <h2>Quick Actions</h2>
+        <div class="row">
+          <a class="btn" href="./teacher-gradinghub.html">Open Gradinghub</a>
+          <a class="btn" href="./teacher-announcements.html">Post Announcement</a>
+          <a class="btn" href="./teacher-files.html">Upload File</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Calendar Peek</h2>
+        <ul>
+          <li>Mon: Dept. meeting</li>
+          <li>Wed: Workshop</li>
+          <li>Fri: Exam day</li>
+        </ul>
+        <a class="btn" href="./teacher-calendar.html">Open Calendar</a>
+      </div>
+
+      <div class="card">
+        <h2>Recent Files</h2>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Updated</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Lesson Plan.pdf</td>
+              <td>2025-01-15</td>
+              <td><a class="btn" href="./teacher-files.html">Open</a></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
   </main>
 </body>
 </html>
