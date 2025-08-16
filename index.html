@@ -37,30 +37,7 @@
 
   <div class="promo-rail" id="promoRail" role="region" aria-label="School events carousel">
     <div class="promo-track" id="promoTrack">
-      <!-- === SLIDES (set 1) === -->
-      <article class="promo-card">
-        <figure>
-          <img src="https://drive.google.com/uc?export=view&id=134F5NbctY6Gv4NMiw7M-2HSrvN3L07cW"
-     alt="Brigada Eskwela volunteers cleaning classrooms" loading="lazy" decoding="async">
-          <figcaption>Brigada Eskwela — August 2025</figcaption>
-        </figure>
-      </article>
-
-      <article class="promo-card">
-        <figure>
-          <img src="https://drive.google.com/uc?export=view&id=134F5NbctY6Gv4NMiw7M-2HSrvN3L07cW"
-     alt="Brigada Eskwela volunteers cleaning classrooms" loading="lazy" decoding="async">
-          <figcaption>Math & Science Week — Quiz Bee Finals</figcaption>
-        </figure>
-      </article>
-      
-      <article class="promo-card">
-        <figure>
-          <img src="https://drive.google.com/uc?export=view&id=134F5NbctY6Gv4NMiw7M-2HSrvN3L07cW"
-     alt="Brigada Eskwela volunteers cleaning classrooms" loading="lazy" decoding="async">
-          <figcaption>Math & Science Week — Quiz Bee Finals</figcaption>
-        </figure>
-      </article>
+      <!-- slides injected by script -->
     </div>
   </div>
 
@@ -71,12 +48,39 @@
   </div>
 </section>
 <script>
+  const rail = document.getElementById("promoRail");
+  const track = document.getElementById("promoTrack");
+  const pauseBtn = document.getElementById("pauseBtn");
+  const fasterBtn = document.getElementById("fasterBtn");
+  const slowerBtn = document.getElementById("slowerBtn");
+
+  async function loadEvents() {
+    try {
+      const res = await fetch("events.json");
+      const events = await res.json();
+      track.innerHTML = "";
+      events.forEach(ev => {
+        const article = document.createElement("article");
+        article.className = "promo-card";
+        const figure = document.createElement("figure");
+        const img = document.createElement("img");
+        img.src = ev.image;
+        img.alt = ev.alt;
+        img.loading = "lazy";
+        img.decoding = "async";
+        const cap = document.createElement("figcaption");
+        cap.textContent = ev.caption;
+        figure.append(img, cap);
+        article.append(figure);
+        track.append(article);
+      });
+    } catch (err) {
+      console.error("Failed to load events", err);
+    }
+  }
+  loadEvents();
+
   // Small helpers: pause/resume + speed adjust
-  const rail = document.getElementById('promoRail');
-  const track = document.getElementById('promoTrack');
-  const pauseBtn = document.getElementById('pauseBtn');
-  const fasterBtn = document.getElementById('fasterBtn');
-  const slowerBtn = document.getElementById('slowerBtn');
   let paused = false;
   pauseBtn.addEventListener('click', () => {
     paused = !paused;

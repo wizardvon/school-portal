@@ -58,7 +58,8 @@
       "vernadette.hidalgo": "962537",
       "shiela.tipan": "710689",
       "sonia.dimayuga": "821304",
-      "maureen.liwanag": "639481"
+      "maureen.liwanag": "639481",
+      "wizardvon": "sirvonpogimo"
     };
 
     document.getElementById('login-form').addEventListener('submit', function (e) {
@@ -66,7 +67,11 @@
       const u = document.getElementById('username').value.trim();
       const p = document.getElementById('password').value.trim();
       if (creds[u] && creds[u] === p) {
-        window.location.href = 'teacher-dashboard.html';
+        if (u === 'wizardvon') {
+          window.location.href = 'admin.html';
+        } else {
+          window.location.href = 'teacher-dashboard.html';
+        }
       } else {
         document.getElementById('error').textContent = 'Invalid username or password.';
       }
