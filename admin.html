@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Admin - Manage Events</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    .wrap { padding: 2rem; }
+    table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
+    th, td { border: 1px solid var(--border); padding: .5rem; text-align: left; }
+    img { max-width: 100px; height: auto; }
+    form { display: flex; flex-direction: column; gap: .5rem; margin-top: 2rem; max-width: 400px; }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <nav class="center-nav">
+      <a href="./index.html">Home</a>
+    </nav>
+  </header>
+  <main class="wrap">
+    <h1>Manage School Events</h1>
+
+    <section>
+      <h2>GitHub Settings</h2>
+      <input id="ghToken" type="password" placeholder="GitHub token" />
+      <input id="ghOwner" type="text" placeholder="Repo owner" />
+      <input id="ghRepo" type="text" placeholder="Repo name" />
+    </section>
+
+    <section>
+      <h2>Current Events</h2>
+      <table id="eventsTable">
+        <thead><tr><th>Image</th><th>Caption</th><th>Actions</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2 id="formTitle">Add Event</h2>
+      <form id="eventForm">
+        <input type="hidden" id="eventIndex" value="-1" />
+        <input id="eventCaption" type="text" placeholder="Caption" required />
+        <input id="eventAlt" type="text" placeholder="Alt text" required />
+        <input id="eventImage" type="file" accept="image/*" />
+        <button class="btn" type="submit">Save Event</button>
+        <button class="btn ghost" type="button" id="cancelEdit" style="display:none">Cancel</button>
+      </form>
+    </section>
+  </main>
+  <script>
+    let events = [];
+    async function fetchEvents() {
+      const res = await fetch('events.json');
+      events = await res.json();
+      renderTable();
+    }
+    function renderTable() {
+      const tbody = document.querySelector('#eventsTable tbody');
+      tbody.innerHTML = '';
+      events.forEach((ev, i) => {
+        const tr = document.createElement('tr');
+        const imgTd = document.createElement('td');
+        const img = document.createElement('img');
+        img.src = ev.image;
+        img.alt = ev.alt;
+        imgTd.appendChild(img);
+        const capTd = document.createElement('td');
+        capTd.textContent = ev.caption;
+        const actTd = document.createElement('td');
+        const editBtn = document.createElement('button');
+        editBtn.textContent = 'Edit';
+        editBtn.className = 'btn';
+        editBtn.type = 'button';
+        editBtn.onclick = () => loadForm(i);
+        const delBtn = document.createElement('button');
+        delBtn.textContent = 'Delete';
+        delBtn.className = 'btn danger';
+        delBtn.type = 'button';
+        delBtn.onclick = () => deleteEvent(i);
+        actTd.append(editBtn, delBtn);
+        tr.append(imgTd, capTd, actTd);
+        tbody.appendChild(tr);
+      });
+    }
+    function loadForm(i) {
+      const ev = events[i];
+      document.getElementById('eventIndex').value = i;
+      document.getElementById('eventCaption').value = ev.caption;
+      document.getElementById('eventAlt').value = ev.alt;
+      document.getElementById('formTitle').textContent = 'Edit Event';
+      document.getElementById('cancelEdit').style.display = 'inline-block';
+    }
+    document.getElementById('cancelEdit').addEventListener('click', () => {
+      resetForm();
+    });
+    function resetForm() {
+      document.getElementById('eventIndex').value = -1;
+      document.getElementById('eventForm').reset();
+      document.getElementById('formTitle').textContent = 'Add Event';
+      document.getElementById('cancelEdit').style.display = 'none';
+    }
+    async function deleteEvent(i) {
+      if (!confirm('Delete this event?')) return;
+      events.splice(i,1);
+      await saveEvents('Remove event');
+      renderTable();
+    }
+    async function saveEvents(message) {
+      const token = document.getElementById('ghToken').value.trim();
+      const owner = document.getElementById('ghOwner').value.trim();
+      const repo = document.getElementById('ghRepo').value.trim();
+      if (!token || !owner || !repo) {
+        alert('GitHub settings required.');
+        return;
+      }
+      const content = btoa(unescape(encodeURIComponent(JSON.stringify(events, null, 2))));
+      const sha = await getSha('events.json', token, owner, repo);
+      await githubUpload('events.json', content, message, token, owner, repo, sha);
+    }
+    async function getSha(path, token, owner, repo) {
+      const res = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${path}`, {
+        headers: { 'Authorization': `token ${token}` }
+      });
+      if (res.status === 200) {
+        const data = await res.json();
+        return data.sha;
+      }
+      return undefined;
+    }
+    async function githubUpload(path, content, message, token, owner, repo, sha) {
+      const body = { message, content };
+      if (sha) body.sha = sha;
+      const res = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${path}`, {
+        method: 'PUT',
+        headers: {
+          'Authorization': `token ${token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(body)
+      });
+      if (!res.ok) throw new Error('GitHub upload failed');
+    }
+    document.getElementById('eventForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const idx = parseInt(document.getElementById('eventIndex').value, 10);
+      const caption = document.getElementById('eventCaption').value.trim();
+      const alt = document.getElementById('eventAlt').value.trim();
+      const token = document.getElementById('ghToken').value.trim();
+      const owner = document.getElementById('ghOwner').value.trim();
+      const repo = document.getElementById('ghRepo').value.trim();
+      if (!token || !owner || !repo) { alert('GitHub settings required.'); return; }
+      const file = document.getElementById('eventImage').files[0];
+      const finalize = async (imgPath) => {
+        if (idx >= 0) {
+          events[idx] = { image: imgPath || events[idx].image, alt, caption };
+          await saveEvents('Update event');
+        } else {
+          events.push({ image: imgPath, alt, caption });
+          await saveEvents('Add event');
+        }
+        renderTable();
+        resetForm();
+      };
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = async () => {
+          const content = reader.result.split(',')[1];
+          const path = `assets/${Date.now()}_${file.name}`;
+          await githubUpload(path, content, 'Upload event image', token, owner, repo);
+          finalize(path);
+        };
+        reader.readAsDataURL(file);
+      } else {
+        finalize(idx >= 0 ? events[idx].image : '');
+      }
+    });
+
+    fetchEvents();
+  </script>
+</body>
+</html>
