@@ -1,1 +1,12 @@
-
+[
+  {
+    "image": "assets/events/event1.svg",
+    "alt": "School assembly",
+    "caption": "Highlights from the recent school assembly"
+  },
+  {
+    "image": "assets/events/event2.svg",
+    "alt": "Science fair",
+    "caption": "Projects on display at the science fair"
+  }
+]
