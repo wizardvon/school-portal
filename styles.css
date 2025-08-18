@@ -1,9 +1,9 @@
 /* Global — professional dark theme */
 :root {
   color-scheme: dark;
-  --bg: #0A122A;           /* page background (navy blue) */
-  --surface: #DADDD8;      /* cards / header */
-  --surface-2: #DADDD8;    /* subtle alt surface */
+  --bg: #0b1220;           /* page background (charcoal / navy) */
+  --surface: #101826;      /* cards / header */
+  --surface-2: #0d1626;    /* subtle alt surface */
   --text: #e6eaf2;         /* primary text */
   --muted: #a3acc2;        /* secondary text */
   --border: #1f2a3a;       /* hairline borders */
@@ -32,7 +32,7 @@ body {
 .topbar {
   position: sticky; top: 0; z-index: 10;
   backdrop-filter: blur(8px);
-  background: #DADDD8; /* light background for top banner */
+  background: color-mix(in oklab, var(--bg), white 3%);
   border-bottom: 1px solid var(--border);
 }
 .center-nav {
@@ -114,7 +114,10 @@ input:focus, select:focus, textarea:focus, .btn:focus, a:focus {
 /* --- Text hero banner (no images) --- */
 .hero{position:relative;border-bottom:1px solid var(--border);
   padding:clamp(20px,5vw,40px) 0;
-  background:#800000; /* maroon banner */
+  background:
+    radial-gradient(1200px 600px at 20% -20%, color-mix(in oklab, var(--accent), black 70%), transparent 60%),
+    radial-gradient(1200px 600px at 80% 120%, color-mix(in oklab, #14b8a6, black 80%), transparent 60%),
+    linear-gradient(180deg, color-mix(in oklab, var(--bg), white 4%), color-mix(in oklab, var(--bg), black 6%));
 }
 .hero-content{max-width:var(--container);margin:0 auto;padding:0 var(--pad);text-align:center}
 .hero-kicker{text-transform:uppercase;letter-spacing:.08em;color:var(--accent-hover);font-weight:700;font-size:.95rem;opacity:.95}
