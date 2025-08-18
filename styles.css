@@ -119,12 +119,11 @@ input:focus, select:focus, textarea:focus, .btn:focus, a:focus {
 
 /* --- Text hero banner (no images) --- */
 .hero{position:relative;border-bottom:1px solid var(--border);
-  padding:clamp(20px,5vw,40px) 0;
+  padding:clamp(10px,3vw,20px) 0;
   background:#000;
 }
 .hero-content{max-width:var(--container);margin:0 auto;padding:0 var(--pad);text-align:center}
-.hero-kicker{text-transform:uppercase;letter-spacing:.08em;color:var(--accent-hover);font-weight:700;font-size:.95rem;opacity:.95}
 .hero-title{margin:.25rem 0 .35rem;font-weight:800;font-size:clamp(1.2rem,3.2vw,1.8rem)}
-.hero-sub{font-style:italic;color:var(--muted);margin:.2rem 0 .6rem}
+.hero-sub{font-style:italic;color:var(--muted);margin:.2rem 0 .4rem}
 .hero-meta{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;color:var(--muted);font-size:.95rem}
 .hero-meta .dot::before{content:"•";opacity:.6;margin:0 6px}
