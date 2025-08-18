@@ -1,12 +1,27 @@
 [
   {
     "image": "assets/events/event1.svg",
-    "alt": "School assembly",
-    "caption": "Highlights from the recent school assembly"
+    "alt": "School Event1",
+    "caption": "Insert Caption of School Event Here"
   },
   {
     "image": "assets/events/event2.svg",
-    "alt": "Science fair",
-    "caption": "Projects on display at the science fair"
+    "alt": "School Event2",
+    "caption": "Insert Caption of School Event Herer"
+  }
+  {
+    "image": "assets/events/event3.svg",
+    "alt": "School Event3",
+    "caption": "Insert Caption of School Event Herer"
+  }
+  {
+    "image": "assets/events/event4.svg",
+    "alt": "School Event4",
+    "caption": "Insert Caption of School Event Herer"
+  }
+  {
+    "image": "assets/events/event5.svg",
+    "alt": "School Event5",
+    "caption": "Insert Caption of School Event Herer"
   }
 ]
