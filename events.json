@@ -1,27 +1,22 @@
 [
   {
-    "image": "assets/events/event1.svg",
-    "alt": "School Event1",
-    "caption": "Insert Caption of School Event Here"
+    "image": "https://drive.google.com/uc?export=view&id=sample1",
+    "alt": "Sample event 1",
+    "caption": "Insert caption of School Event 1"
   },
   {
-    "image": "assets/events/event2.svg",
-    "alt": "School Event2",
-    "caption": "Insert Caption of School Event Herer"
-  }
+    "image": "https://drive.google.com/uc?export=view&id=sample2",
+    "alt": "Sample event 2",
+    "caption": "Insert caption of School Event 2"
+  },
   {
-    "image": "assets/events/event3.svg",
-    "alt": "School Event3",
-    "caption": "Insert Caption of School Event Herer"
-  }
+    "image": "https://drive.google.com/uc?export=view&id=sample3",
+    "alt": "Sample event 3",
+    "caption": "Insert caption of School Event 3"
+  },
   {
-    "image": "assets/events/event4.svg",
-    "alt": "School Event4",
-    "caption": "Insert Caption of School Event Herer"
-  }
-  {
-    "image": "assets/events/event5.svg",
-    "alt": "School Event5",
-    "caption": "Insert Caption of School Event Herer"
+    "image": "https://drive.google.com/uc?export=view&id=sample4",
+    "alt": "Sample event 4",
+    "caption": "Insert caption of School Event 4"
   }
 ]
