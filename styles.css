@@ -29,16 +29,16 @@ body {
 }
 
 /* Page-specific background colors */
-body.home-page { background: #f8f9fa; }
-body.student-page { background: #fff5f5; }
-body.teacher-page { background: #f5faff; }
-body.admin-page { background: #f3e8ff; }
+body.home-page { background: var(--bg); }
+body.student-page { background: var(--bg); }
+body.teacher-page { background: var(--bg); }
+body.admin-page { background: var(--bg); }
 
 /* Centered top nav (sticky) */
 .topbar {
   position: sticky; top: 0; z-index: 10;
   backdrop-filter: blur(8px);
-  background: #800000;
+  background: #000;
   border-bottom: 1px solid var(--border);
 }
 .center-nav {
@@ -120,7 +120,7 @@ input:focus, select:focus, textarea:focus, .btn:focus, a:focus {
 /* --- Text hero banner (no images) --- */
 .hero{position:relative;border-bottom:1px solid var(--border);
   padding:clamp(20px,5vw,40px) 0;
-  background:#800000;
+  background:#000;
 }
 .hero-content{max-width:var(--container);margin:0 auto;padding:0 var(--pad);text-align:center}
 .hero-kicker{text-transform:uppercase;letter-spacing:.08em;color:var(--accent-hover);font-weight:700;font-size:.95rem;opacity:.95}
