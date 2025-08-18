@@ -32,78 +32,6 @@
   </section>
   <main class="wrap">
     <div>
-<section class="promo" aria-labelledby="eventsTitle">
-  <h2 id="eventsTitle">School Events</h2>
-
-  <div class="promo-rail" id="promoRail" role="region" aria-label="School events carousel">
-    <div class="promo-track" id="promoTrack">
-      <!-- slides injected by script -->
-    </div>
-  </div>
-
-  <div class="promo-controls">
-    <button class="btn ghost" id="pauseBtn">⏸</button>
-    <button class="btn ghost" id="fasterBtn">➕</button>
-    <button class="btn ghost" id="slowerBtn">➖</button>
-  </div>
-</section>
-<script>
-  const rail = document.getElementById("promoRail");
-  const track = document.getElementById("promoTrack");
-  const pauseBtn = document.getElementById("pauseBtn");
-  const fasterBtn = document.getElementById("fasterBtn");
-  const slowerBtn = document.getElementById("slowerBtn");
-
-  async function loadEvents() {
-    try {
-      const res = await fetch("events.json");
-      const events = await res.json();
-      track.innerHTML = "";
-      events.forEach(ev => {
-        const article = document.createElement("article");
-        article.className = "promo-card";
-        const figure = document.createElement("figure");
-        const img = document.createElement("img");
-        img.src = ev.image;
-        img.alt = ev.alt;
-        img.loading = "lazy";
-        img.decoding = "async";
-        const cap = document.createElement("figcaption");
-        cap.textContent = ev.caption;
-        figure.append(img, cap);
-        article.append(figure);
-        track.append(article);
-      });
-    } catch (err) {
-      console.error("Failed to load events", err);
-    }
-  }
-  loadEvents();
-
-  // Small helpers: pause/resume + speed adjust
-  let paused = false;
-  pauseBtn.addEventListener('click', () => {
-    paused = !paused;
-    rail.classList.toggle('paused', paused);
-    pauseBtn.textContent = paused ? '▶' : '⏸';
-  });
-  function setSpeed(mult) {
-    // read current speed (e.g., "40s") and adjust
-    const current = getComputedStyle(track).getPropertyValue('--speed').trim() || '40s';
-    const n = parseFloat(current);
-    const unit = current.endsWith('ms') ? 'ms' : 's';
-    const newVal = Math.max(5, Math.min(120, n * mult)); // clamp between 5s and 120s
-    track.style.setProperty('--speed', newVal + unit);
-  }
-  fasterBtn.addEventListener('click', () => setSpeed(0.8));
-  slowerBtn.addEventListener('click', () => setSpeed(1.25));
-
-  // Keyboard: space to pause/resume
-  document.addEventListener('keydown', (e) => {
-    if (e.code === 'Space') { e.preventDefault(); pauseBtn.click(); }
-  });
-</script>
-
       <h1>Welcome!</h1>
       <p>This is the starting point for our Student & Teacher portal.</p>
       <div class="links">
@@ -112,5 +40,37 @@
       </div>
     </div>
   </main>
+
+  <section class="container" aria-labelledby="eventsTitle">
+    <h2 id="eventsTitle">School Events</h2>
+    <div class="grid" id="eventsGrid"></div>
+  </section>
+
+  <script>
+    async function loadEvents() {
+      try {
+        const res = await fetch("events.json");
+        const events = await res.json();
+        const grid = document.getElementById("eventsGrid");
+        grid.innerHTML = "";
+        events.forEach(ev => {
+          const article = document.createElement("article");
+          article.className = "card";
+          const img = document.createElement("img");
+          img.src = ev.image;
+          img.alt = ev.alt || "";
+          img.loading = "lazy";
+          img.decoding = "async";
+          const cap = document.createElement("p");
+          cap.textContent = ev.caption;
+          article.append(img, cap);
+          grid.append(article);
+        });
+      } catch (err) {
+        console.error("Failed to load events", err);
+      }
+    }
+    loadEvents();
+  </script>
 </body>
 </html>
