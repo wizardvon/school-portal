@@ -1,22 +1,27 @@
 [
   {
-    "image": "https://drive.google.com/uc?export=view&id=1AeqnQAHrxro_wKHiAYYBE1okEaBr_og0",
-    "alt": "Work Immersion",
+    "image": "assets/events/476390605_513498301763630_8710831710010240904_n.jpg",
+    "alt": "School event 1",
     "caption": "Insert caption of School Event 1"
   },
   {
-    "image": "https://drive.google.com/uc?export=view&id=sample2",
-    "alt": "Sample event 2",
+    "image": "assets/events/477026595_515606581552802_3139943238250670291_n.jpg",
+    "alt": "School event 2",
     "caption": "Insert caption of School Event 2"
   },
   {
-    "image": "https://drive.google.com/uc?export=view&id=sample3",
-    "alt": "Sample event 3",
+    "image": "assets/events/503504668_1677126316269332_1189432808264767766_n.jpg",
+    "alt": "School event 3",
     "caption": "Insert caption of School Event 3"
   },
   {
-    "image": "https://drive.google.com/uc?export=view&id=sample4",
-    "alt": "Sample event 4",
+    "image": "assets/events/512795252_1814633455766953_7106792590367991017_n.jpg",
+    "alt": "School event 4",
     "caption": "Insert caption of School Event 4"
+  },
+  {
+    "image": "assets/events/514029474_2925631670956519_44879033167812945_n.jpg",
+    "alt": "School event 5",
+    "caption": "Insert caption of School Event 5"
   }
 ]
