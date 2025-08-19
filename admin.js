@@ -1,6 +1,28 @@
 // Script for managing school events in the admin portal
 let events = [];
 
+// Persist GitHub settings in localStorage
+const tokenInput = document.getElementById('ghToken');
+const ownerInput = document.getElementById('ghOwner');
+const repoInput = document.getElementById('ghRepo');
+
+tokenInput.value = localStorage.getItem('ghToken') || '';
+ownerInput.value = localStorage.getItem('ghOwner') || '';
+repoInput.value = localStorage.getItem('ghRepo') || '';
+
+tokenInput.addEventListener('input', e => localStorage.setItem('ghToken', e.target.value));
+ownerInput.addEventListener('input', e => localStorage.setItem('ghOwner', e.target.value));
+repoInput.addEventListener('input', e => localStorage.setItem('ghRepo', e.target.value));
+
+document.getElementById('resetSettings').addEventListener('click', () => {
+  localStorage.removeItem('ghToken');
+  localStorage.removeItem('ghOwner');
+  localStorage.removeItem('ghRepo');
+  tokenInput.value = '';
+  ownerInput.value = '';
+  repoInput.value = '';
+});
+
 async function fetchEvents() {
   const res = await fetch('events.json');
   events = await res.json();
@@ -93,11 +115,14 @@ async function saveEvents(message) {
 async function getSha(path, token, owner, repo) {
   const res = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${path}`, {
     headers: {
-      'Authorization': `Bearer ${token}`,
+      'Authorization': `token ${token}`,
       'Accept': 'application/vnd.github+json',
       'X-GitHub-Api-Version': '2022-11-28'
     }
   });
+  if (res.status === 401 || res.status === 403) {
+    throw new Error(`Token lacks required repo permissions. Ensure 'contents: write' scope on ${owner}/${repo}.`);
+  }
   if (res.status === 200) {
     const data = await res.json();
     return data.sha;
@@ -111,7 +136,7 @@ async function githubUpload(path, content, message, token, owner, repo, sha) {
   const res = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${path}`, {
     method: 'PUT',
     headers: {
-      'Authorization': `Bearer ${token}`,
+      'Authorization': `token ${token}`,
       'Accept': 'application/vnd.github+json',
       'X-GitHub-Api-Version': '2022-11-28',
       'Content-Type': 'application/json'
@@ -119,6 +144,9 @@ async function githubUpload(path, content, message, token, owner, repo, sha) {
     body: JSON.stringify(body)
   });
   if (!res.ok) {
+    if (res.status === 401 || res.status === 403) {
+      throw new Error(`Token lacks required repo permissions. Ensure 'contents: write' scope on ${owner}/${repo}.`);
+    }
     let text = '';
     try {
       text = await res.text();
