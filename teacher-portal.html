@@ -1,32 +1,53 @@
 <!doctype html>
 <html lang="en">
   <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Teacher Portal</title>
-  <link rel="stylesheet" href="styles.css" />
-  <style>
-    html, body { height: 100%; margin: 0; font-family: system-ui, Arial, sans-serif; }
-    .wrap { min-height: 100%; display: grid; place-items: center; padding: 2rem; }
-    .grades { display: flex; gap: 2rem; width: 100%; max-width: 600px; }
-    .grade { flex: 1; }
-    h2 { text-align: center; margin-top: 0; }
-    a { display: block; margin: .25rem 0; text-align: center; }
-  </style>
-</head>
-<body class="teacher-page">
-  <header>
-    <nav>
-      <a href="./index.html">Home</a>
-      <a href="./teacher-dashboard.html">Dashboard</a>
-      <a href="./teacher-gradinghub.html">Gradinghub</a>
-      <a href="./teacher-schedule.html">Schedule</a>
-      <a href="./teacher-calendar.html">Calendar</a>
-      <a href="./teacher-announcements.html">Announcements</a>
-      <a href="./teacher-settings.html">Settings</a>
-      <a href="./teacher-help.html">Help</a>
-      <a href="./teacher-files.html">Upload/Download</a>
-    </nav>
-  </header>
-</body>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Teacher Portal</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body class="teacher-page portal-page">
+    <header class="topbar">
+      <nav class="center-nav">
+        <a href="./index.html">Home</a>
+        <a href="./teacher-dashboard.html">Dashboard</a>
+        <a href="./teacher-gradinghub.html">Gradinghub</a>
+        <a href="./teacher-schedule.html">Schedule</a>
+        <a href="./teacher-calendar.html">Calendar</a>
+        <a href="./teacher-announcements.html">Announcements</a>
+        <a href="./teacher-settings.html">Settings</a>
+        <a href="./teacher-help.html">Help</a>
+        <a href="./teacher-files.html">Upload/Download</a>
+      </nav>
+    </header>
+    <main class="portal-main">
+      <section class="portal-hero">
+        <div class="portal-hero-inner">
+          <p class="portal-eyebrow">Teacher Portal</p>
+          <h1>Welcome back, educators.</h1>
+          <p class="portal-subtitle">Access your classes, grading tools, schedules, and announcements from one unified workspace.</p>
+        </div>
+      </section>
+      <section class="portal-actions">
+        <div class="portal-card">
+          <h2>Quick links</h2>
+          <p>Choose a destination from the navigation above to manage daily tasks and student progress.</p>
+          <div class="portal-highlights">
+            <div>
+              <span class="badge">Grading Hub</span>
+              <p>Review and post grades with confidence.</p>
+            </div>
+            <div>
+              <span class="badge">Schedule</span>
+              <p>Stay on top of classes and meetings.</p>
+            </div>
+            <div>
+              <span class="badge">Announcements</span>
+              <p>Share updates with students fast.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </body>
 </html>
